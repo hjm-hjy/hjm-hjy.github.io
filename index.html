@@ -188,45 +188,19 @@
     color:var(--faint);font-size:12.5px;letter-spacing:.24em;
   }
 
-  /* ---------- 动态背景 ---------- */
+  /* ---------- 动态背景：粒子连线 ---------- */
   .bg-fx{
     position:fixed;inset:0;z-index:-1;overflow:hidden;
     background:var(--bg);
   }
-  .bg-fx .aurora{
-    position:absolute;border-radius:50%;
-    will-change:transform;
-  }
-  .bg-fx .a1{
-    width:55vw;height:55vw;left:-12vw;top:-18vw;
-    background:radial-gradient(circle at 50% 50%, rgba(200,255,46,.15), rgba(200,255,46,0) 65%);
-    animation:drift1 26s ease-in-out infinite alternate;
-  }
-  .bg-fx .a2{
-    width:45vw;height:45vw;right:-10vw;top:32vh;
-    background:radial-gradient(circle at 50% 50%, rgba(120,150,60,.13), rgba(120,150,60,0) 65%);
-    animation:drift2 32s ease-in-out infinite alternate;
-  }
-  .bg-fx .a3{
-    width:40vw;height:40vw;left:30vw;bottom:-20vw;
-    background:radial-gradient(circle at 50% 50%, rgba(255,255,255,.05), rgba(255,255,255,0) 65%);
-    animation:drift1 38s ease-in-out infinite alternate-reverse;
-  }
-  @keyframes drift1{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,4vh) scale(1.12)}}
-  @keyframes drift2{from{transform:translate(0,0) scale(1.05)}to{transform:translate(-5vw,-3vh) scale(.95)}}
-  .bg-fx .dots{
+  .bg-fx canvas{
     position:absolute;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.07) 1px, transparent 1px);
-    background-size:28px 28px;
-    -webkit-mask-image:linear-gradient(to bottom, black 0%, transparent 72%);
-    mask-image:linear-gradient(to bottom, black 0%, transparent 72%);
+    width:100%;height:100%;
+    display:block;
   }
   .bg-fx .grain{
     position:absolute;inset:0;opacity:.05;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-  }
-  @media (prefers-reduced-motion:reduce){
-    .bg-fx .aurora{animation:none}
   }
 
   /* ---------- 滚动显现 ---------- */
@@ -241,10 +215,7 @@
 <body>
 
 <div class="bg-fx" aria-hidden="true">
-  <div class="aurora a1"></div>
-  <div class="aurora a2"></div>
-  <div class="aurora a3"></div>
-  <div class="dots"></div>
+  <canvas id="particles"></canvas>
   <div class="grain"></div>
 </div>
 
@@ -420,6 +391,92 @@
     });
   },{threshold:0.12});
   els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+<script>
+/* 粒子连线背景：荧光绿 + 米白粒子，近距连线，鼠标附近连线增强 */
+(function(){
+  var canvas = document.getElementById('particles');
+  if(!canvas || !canvas.getContext) return;
+  var ctx = canvas.getContext('2d');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W = 0, H = 0, particles = [];
+  var mouse = {x: null, y: null};
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var LINK = 130, MOUSE_LINK = 175;
+
+  function resize(){
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    var count = Math.min(110, Math.floor(W * H / 16000));
+    particles = [];
+    for(var i = 0; i < count; i++){
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 1.6 + 0.8,
+        lime: Math.random() < 0.35
+      });
+    }
+  }
+
+  function step(){
+    ctx.clearRect(0, 0, W, H);
+    for(var i = 0; i < particles.length; i++){
+      var p = particles[i];
+      if(!reduceMotion){
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < 0 || p.x > W) p.vx *= -1;
+        if(p.y < 0 || p.y > H) p.vy *= -1;
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.lime ? 'rgba(200,255,46,0.85)' : 'rgba(244,244,241,0.55)';
+      ctx.fill();
+    }
+    for(var i = 0; i < particles.length; i++){
+      for(var j = i + 1; j < particles.length; j++){
+        var a = particles[i], b = particles[j];
+        var dx = a.x - b.x, dy = a.y - b.y;
+        var d2 = dx * dx + dy * dy;
+        if(d2 < LINK * LINK){
+          var alpha = (1 - Math.sqrt(d2) / LINK) * 0.28;
+          ctx.strokeStyle = 'rgba(200,255,46,' + alpha + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+    if(mouse.x !== null){
+      for(var i = 0; i < particles.length; i++){
+        var p = particles[i];
+        var dx = p.x - mouse.x, dy = p.y - mouse.y;
+        var d2 = dx * dx + dy * dy;
+        if(d2 < MOUSE_LINK * MOUSE_LINK){
+          var alpha = (1 - Math.sqrt(d2) / MOUSE_LINK) * 0.5;
+          ctx.strokeStyle = 'rgba(200,255,46,' + alpha + ')';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+    }
+    if(!reduceMotion) requestAnimationFrame(step);
+  }
+
+  window.addEventListener('resize', function(){ resize(); if(reduceMotion) step(); });
+  window.addEventListener('mousemove', function(e){ mouse.x = e.clientX; mouse.y = e.clientY; });
+  document.addEventListener('mouseleave', function(){ mouse.x = null; mouse.y = null; });
+  resize();
+  step();
 })();
 </script>
 </body>
