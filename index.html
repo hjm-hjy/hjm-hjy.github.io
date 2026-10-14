@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>车涵 CHE HAN · 个人简历</title>
+<style>
+  :root{
+    --bg:#0B0B0C;
+    --ink:#F4F4F1;
+    --muted:#A6A6A2;
+    --faint:#6E6E6A;
+    --line:#232327;
+    --lime:#C8FF2E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .serif{font-family:"Noto Serif SC","Songti SC","STSong",serif}
+  a{color:inherit;text-decoration:none}
+
+  /* ---------- 导航 ---------- */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(11,11,12,.92);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{
+    max-width:1020px;margin:0 auto;padding:0 28px;
+    display:flex;align-items:center;justify-content:space-between;
+    height:60px;
+  }
+  nav .brand{font-size:15px;letter-spacing:.28em;font-weight:600}
+  nav .brand b{color:var(--lime);font-weight:600}
+  nav ul{display:flex;gap:26px;list-style:none;font-size:13.5px;color:var(--muted);letter-spacing:.12em}
+  nav ul a{padding:6px 0;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+  nav ul a:hover{color:var(--lime);border-color:var(--lime)}
+  @media (max-width:640px){
+    nav ul{gap:14px;font-size:12px}
+    nav .wrap{padding:0 18px}
+  }
+
+  /* ---------- 首屏 ---------- */
+  header{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:center;
+    max-width:1020px;margin:0 auto;padding:120px 28px 80px;
+  }
+  .hero-name{
+    font-size:clamp(88px,20vw,220px);
+    line-height:1.05;
+    letter-spacing:.06em;
+    font-weight:700;
+  }
+  .hero-name .dot{color:var(--lime)}
+  .hero-en{
+    margin-top:26px;
+    font-size:13px;letter-spacing:.5em;color:var(--muted);
+  }
+  .hero-tag{
+    margin-top:34px;
+    font-size:clamp(19px,3.4vw,27px);
+    letter-spacing:.18em;
+    color:var(--ink);
+  }
+  .hero-tag em{font-style:normal;color:var(--lime)}
+  .hero-sub{
+    margin-top:18px;max-width:560px;
+    color:var(--muted);font-size:15.5px;letter-spacing:.04em;
+  }
+  .hero-meta{
+    margin-top:44px;padding-top:26px;
+    border-top:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:12px 34px;
+    font-size:13.5px;color:var(--faint);letter-spacing:.1em;
+  }
+  .hero-meta span b{color:var(--muted);font-weight:500}
+
+  /* ---------- 数据条 ---------- */
+  .stats{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .stats .grid{
+    max-width:1020px;margin:0 auto;padding:0 28px;
+    display:grid;grid-template-columns:repeat(4,1fr);
+  }
+  .stat{
+    padding:38px 18px 34px;
+    border-left:1px solid var(--line);
+  }
+  .stat:first-child{border-left:none}
+  .stat .num{
+    font-size:clamp(30px,5vw,46px);
+    font-weight:700;color:var(--lime);
+    letter-spacing:.02em;line-height:1.2;
+  }
+  .stat .lbl{margin-top:10px;font-size:13px;color:var(--muted);letter-spacing:.14em}
+  @media (max-width:640px){
+    .stats .grid{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(3){border-left:none}
+    .stat{border-top:1px solid var(--line)}
+    .stat:nth-child(-n+2){border-top:none}
+  }
+
+  /* ---------- 板块 ---------- */
+  section{max-width:1020px;margin:0 auto;padding:96px 28px 30px}
+  .sec-head{
+    display:flex;align-items:baseline;gap:18px;
+    margin-bottom:14px;
+  }
+  .sec-no{
+    font-size:13px;color:var(--lime);letter-spacing:.2em;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  .sec-title{font-size:clamp(26px,4.6vw,38px);letter-spacing:.14em;font-weight:700}
+  .sec-line{height:1px;background:var(--line);margin:26px 0 8px}
+
+  .about p{color:var(--muted);font-size:16px;max-width:720px;margin-top:18px;letter-spacing:.03em}
+  .about p b{color:var(--ink);font-weight:600}
+  .about .edu{
+    margin-top:30px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:1px;background:var(--line);border:1px solid var(--line);
+  }
+  .about .edu div{background:var(--bg);padding:22px 24px}
+  .about .edu .k{font-size:12px;color:var(--faint);letter-spacing:.22em;margin-bottom:8px}
+  .about .edu .v{font-size:19px;letter-spacing:.04em}
+  .about .edu .v small{font-size:13px;color:var(--muted)}
+
+  /* ---------- 科研条目 ---------- */
+  .item{
+    display:grid;grid-template-columns:64px 1fr;
+    gap:8px 22px;
+    padding:34px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .item .no{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    color:var(--lime);font-size:14px;letter-spacing:.1em;
+    padding-top:6px;
+  }
+  .item h3{font-size:19px;letter-spacing:.05em;font-weight:600;line-height:1.7}
+  .item .role{
+    display:inline-block;margin:10px 0 4px;
+    font-size:12.5px;letter-spacing:.16em;color:var(--lime);
+    border:1px solid #3a3d2a;padding:3px 12px;border-radius:999px;
+  }
+  .item .desc{color:var(--muted);font-size:14.5px;margin-top:10px;letter-spacing:.03em;max-width:760px}
+
+  /* ---------- 列表型板块 ---------- */
+  .rows{list-style:none}
+  .rows li{
+    padding:24px 0;border-bottom:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline;
+  }
+  .rows .t{font-size:17px;letter-spacing:.04em}
+  .rows .d{margin-left:auto;font-size:13.5px;color:var(--muted);letter-spacing:.1em}
+  .rows .n{font-size:13.5px;color:var(--muted);letter-spacing:.06em;flex-basis:100%}
+  .award-hot{color:var(--lime);font-size:12.5px;letter-spacing:.2em;border:1px solid #3a3d2a;border-radius:999px;padding:2px 12px}
+
+  /* ---------- 技能 ---------- */
+  .tags{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+  .tags span{
+    font-size:14px;letter-spacing:.08em;
+    border:1px solid var(--line);border-radius:999px;
+    padding:9px 22px;color:var(--ink);
+    transition:border-color .2s,color .2s;
+  }
+  .tags span:hover{border-color:var(--lime);color:var(--lime)}
+  .tags span.hot{border-color:#3a3d2a;color:var(--lime)}
+
+  /* ---------- 联系 / 页脚 ---------- */
+  .contact{text-align:center;padding:110px 28px 60px;max-width:1020px;margin:0 auto}
+  .contact .big{font-size:clamp(24px,5vw,40px);letter-spacing:.2em;font-weight:700}
+  .contact .big em{font-style:normal;color:var(--lime)}
+  .contact p{margin-top:20px;color:var(--muted);font-size:14.5px;letter-spacing:.12em}
+  footer{
+    border-top:1px solid var(--line);
+    padding:26px 28px 34px;text-align:center;
+    color:var(--faint);font-size:12.5px;letter-spacing:.24em;
+  }
+
+  /* ---------- 滚动显现 ---------- */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.visible{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand serif" href="#top">车涵 <b>·</b> CHE HAN</a>
+    <ul>
+      <li><a href="#about">关于</a></li>
+      <li><a href="#research">精选科研</a></li>
+      <li><a href="#projects">项目经历</a></li>
+      <li><a href="#awards">荣誉奖项</a></li>
+      <li><a href="#skills">技能栈</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header id="top">
+  <h1 class="hero-name serif reveal">车涵<span class="dot">.</span></h1>
+  <div class="hero-en reveal">CHE HAN · PORTFOLIO</div>
+  <p class="hero-tag serif reveal">AI <em>×</em> 口腔交叉研究者</p>
+  <p class="hero-sub reveal">宁波大学口腔医学在读，以深度学习与机器学习切入医学影像与信号分析，目标直博，未来做研发岗。</p>
+  <div class="hero-meta reveal">
+    <span><b>宁波大学</b> · 口腔医学本科</span>
+    <span>2024 – 2029 · 五年制在读</span>
+    <span>本科三年级</span>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="grid">
+    <div class="stat reveal"><div class="num">2</div><div class="lbl">篇一作在投</div></div>
+    <div class="stat reveal"><div class="num">1</div><div class="lbl">项发明专利 · 已受理</div></div>
+    <div class="stat reveal"><div class="num">1</div><div class="lbl">项国家级奖项</div></div>
+    <div class="stat reveal"><div class="num">3.65</div><div class="lbl">GPA</div></div>
+  </div>
+</div>
+
+<section id="about" class="about">
+  <div class="sec-head reveal">
+    <span class="sec-no">01</span>
+    <h2 class="sec-title serif">关于</h2>
+  </div>
+  <div class="sec-line"></div>
+  <p class="reveal">车涵，宁波大学<b>口腔医学</b>本科在读（2024–2029，五年制）。主攻 <b>AI × 口腔</b> 交叉方向：用深度学习与机器学习做医学影像与生理信号分析，熟悉从数据预处理、模型搭建到统计评估的完整科研流程。</p>
+  <div class="edu reveal">
+    <div><div class="k">GPA / 均分</div><div class="v">3.65 <small>/ 88.13</small></div></div>
+    <div><div class="k">GPA 排名</div><div class="v">8 <small>/ 45</small></div></div>
+    <div><div class="k">综测排名</div><div class="v">6 <small>/ 45</small></div></div>
+    <div><div class="k">CET-6</div><div class="v">484 <small>备考中</small></div></div>
+  </div>
+</section>
+
+<section id="research">
+  <div class="sec-head reveal">
+    <span class="sec-no">02</span>
+    <h2 class="sec-title serif">精选科研</h2>
+  </div>
+  <div class="sec-line"></div>
+
+  <article class="item reveal">
+    <div class="no">01</div>
+    <div>
+      <h3 class="serif">心音深度学习域自适应研究</h3>
+      <span class="role">第一作者 · 实验已完成，论文撰写中</span>
+      <p class="desc">知识约束仿真心音源域构建、多视角声学表征网络搭建与源域预训练；基于 BN 统计校准与参数高效残差适配器的合成—真实域自适应方法，建立含统计检验的固定协议评估与误差分析流程。</p>
+    </div>
+  </article>
+
+  <article class="item reveal">
+    <div class="no">02</div>
+    <div>
+      <h3 class="serif">拉曼光谱预测红枣 cAMP 含量的机器学习研究</h3>
+      <span class="role">第一作者 · 实验已完成，论文撰写中</span>
+      <p class="desc">独立搭建从光谱基线校正、分箱到降维与特征工程的完整前处理管线；在统一建模流程内完成多类回归模型的对比调参与可解释性分析，以按组嵌套交叉验证完成严谨的性能评估与稳健性检验。</p>
+    </div>
+  </article>
+
+  <article class="item reveal">
+    <div class="no">03</div>
+    <div>
+      <h3 class="serif">细胞生物学方向综述</h3>
+      <span class="role">共同第一作者 · JCR Q1，稿件转投中</span>
+      <p class="desc">负责综述章节设计与主要内容撰写，完成文献查验、分类整理及 EndNote 动态引用管理；完成科研配图设计与绘制、查重及稿件修改。</p>
+    </div>
+  </article>
+
+  <article class="item reveal">
+    <div class="no">04</div>
+    <div>
+      <h3 class="serif">国家发明专利 · 已受理</h3>
+      <span class="role">排名 4 / 8 · 已受理</span>
+      <p class="desc">《文本知识引导与样本微调的心脏疾病智能听诊方法及系统》：提出核心技术思路并承担申请文件的技术核验。</p>
+    </div>
+  </article>
+</section>
+
+<section id="projects">
+  <div class="sec-head reveal">
+    <span class="sec-no">03</span>
+    <h2 class="sec-title serif">项目经历</h2>
+  </div>
+  <div class="sec-line"></div>
+  <ul class="rows">
+    <li class="reveal">
+      <span class="t serif">校级 SRIP《智能制造全过程质量管控传感器研发》</span>
+      <span class="d">项目负责人 · 在研</span>
+    </li>
+    <li class="reveal">
+      <span class="t serif">省级 SRIP / 浙江省新苗人才计划</span>
+      <span class="d">核心成员 · 在研 2 项</span>
+      <span class="n">承担两项项目的主要技术研发工作。</span>
+    </li>
+  </ul>
+</section>
+
+<section id="awards">
+  <div class="sec-head reveal">
+    <span class="sec-no">04</span>
+    <h2 class="sec-title serif">荣誉奖项</h2>
+  </div>
+  <div class="sec-line"></div>
+  <ul class="rows">
+    <li class="reveal">
+      <span class="t serif">中国青年科技创新“揭榜挂帅”擂台赛</span>
+      <span class="award-hot">二等奖 · 国家级 · 2026</span>
+    </li>
+    <li class="reveal">
+      <span class="t serif">“挑战杯”大学生课外学术科技作品竞赛</span>
+      <span class="d">校级奖项 · 省赛进行中</span>
+    </li>
+  </ul>
+</section>
+
+<section id="skills">
+  <div class="sec-head reveal">
+    <span class="sec-no">05</span>
+    <h2 class="sec-title serif">技能栈</h2>
+  </div>
+  <div class="sec-line"></div>
+  <div class="tags reveal">
+    <span class="hot">Python</span>
+    <span class="hot">PyTorch</span>
+    <span class="hot">scikit-learn</span>
+    <span>口腔 CBCT 分割（nnU-Net）</span>
+    <span>医学 AI 交叉（AI + 口腔）</span>
+    <span>信号与光谱数据处理</span>
+    <span>科研可视化</span>
+    <span>英文学术写作</span>
+  </div>
+</section>
+
+<div id="contact" class="contact">
+  <div class="big serif reveal">保持<em>连接</em></div>
+  <p class="reveal">欢迎学术交流与合作</p>
+</div>
+
+<footer>© 2026 车涵 · 宁波大学口腔医学</footer>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.add('visible'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.12});
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
