@@ -220,6 +220,7 @@
   .contact .big{font-size:clamp(24px,5vw,40px);letter-spacing:.2em;font-weight:700}
   .contact .big em{font-style:normal;color:var(--lime)}
   .contact p{margin-top:20px;color:var(--muted);font-size:14.5px;letter-spacing:.12em}
+  .contact .sec-no{display:block;margin-bottom:22px}
   footer{
     border-top:1px solid var(--line);
     padding:26px 28px 34px;text-align:center;
@@ -241,6 +242,11 @@
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   }
 
+  .bg-fx .vignette{
+    position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse 92% 76% at 50% 42%,transparent 50%,color-mix(in srgb,var(--bg) 52%,transparent) 79%,color-mix(in srgb,var(--bg) 88%,transparent) 100%);
+  }
+
   /* ---------- 滚动显现 ---------- */
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
   .reveal.visible{opacity:1;transform:none}
@@ -255,6 +261,7 @@
 <div class="bg-fx" aria-hidden="true">
   <canvas id="particles"></canvas>
   <div class="grain"></div>
+  <div class="vignette"></div>
 </div>
 
 <nav>
@@ -427,6 +434,7 @@
 </section>
 
 <div id="contact" class="contact">
+  <span class="sec-no reveal">06</span>
   <div class="big serif reveal">保持<em>连接</em></div>
   <p class="reveal">欢迎学术交流与合作</p>
 </div>
